@@ -8,6 +8,20 @@ import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 
 const app = express();
 
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "GrowEasy API is running"
+  });
+});
+
+app.get("/health", (req, res) => {
+  res.json({
+    success: true,
+    status: "healthy"
+  });
+});
+
 app.use(helmet());
 app.use(
   cors({

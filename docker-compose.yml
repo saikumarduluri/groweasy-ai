@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - NODE_ENV=production
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+      - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+      - AI_BATCH_SIZE=${AI_BATCH_SIZE:-10}
+      - AI_MAX_RETRIES=${AI_MAX_RETRIES:-3}
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL:-http://localhost:4000}
+    depends_on:
+      - backend
+    restart: unless-stopped
